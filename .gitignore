@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+
+# Python environments
+venv/
+.venv
+.env
+
+# Terraform files that are created
+*.tfstate*
+.terraform/
+.terraform.lock.hcl
+
+# Jupyter notebooks
+*.ipynb*
+
+# For GCP Service account key
+credentials/*
+# Keeps directory and only this file,
+# so users don't have to create the credentials folder.
+!credentials/place_key_here.txt   
+
+# folder for local data
+data/*

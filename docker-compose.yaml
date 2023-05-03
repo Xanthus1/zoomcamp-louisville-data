@@ -1,0 +1,36 @@
+services:
+  prefect-server:
+    build:
+      context: prefect
+    entrypoint: ["prefect", "orion", "start", "--host", "0.0.0.0"]
+    volumes:
+      - './credentials:/root/credentials'
+      - prefect-server-db:/root/.prefect
+    environment:
+      - GCP_PROJECT_ID
+    ports: 
+      - "4200:4200"
+    networks:
+      - default
+    healthcheck:
+      test: ["CMD", "python", "healthcheck.py"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+  prefect-scripts:
+    build:
+      context: prefect
+    depends_on:
+      prefect-server:
+        condition: service_healthy
+    entrypoint: ["python", "-m", "blocks.make_gcp_blocks"]
+    volumes:
+      - './credentials:/root/credentials' 
+    environment:
+      - GCP_PROJECT_ID
+      - PREFECT_API_URL=http://prefect-server:4200/api
+    networks:
+      - default
+
+volumes:
+  prefect-server-db:
