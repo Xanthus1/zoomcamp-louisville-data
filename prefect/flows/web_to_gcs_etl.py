@@ -75,16 +75,21 @@ def clean(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def clean_format_2008(df: pd.DataFrame) -> pd.DataFrame:
-    """ Cleans the data for the 2008 DataFormat"""
-    df['InvoiceDt'] = pd.to_datetime(df['InvoiceDt'])
-    df['CheckDt'] = pd.to_datetime(df['CheckDt'])
-    df['CheckVoidDt'] = pd.to_datetime(df['CheckVoidDt'])
+    """ Cleans the data for the 2008 DataFormat. Corcering bad date data
+    to be 'NaT' (Not a Time). Ran into this issue for 2012's data.
+    
+    I found non-integer InvoiceIDs as well. I may need to change this column
+    to a string in BigQuery"""
+    df['InvoiceDt'] = pd.to_datetime(df['InvoiceDt'], errors='coerce')
+    df['InvoiceID'] = pd.to_numeric(df['InvoiceID'], errors='coerce')
+    df['CheckDt'] = pd.to_datetime(df['CheckDt'], errors='coerce')
+    df['CheckVoidDt'] = pd.to_datetime(df['CheckVoidDt'], errors='coerce')
     return df
 
 def clean_format_2018(df: pd.DataFrame) -> pd.DataFrame:
     """ Cleans the data for the 2018 DataFormat"""
-    df['invoice_date'] = pd.to_datetime(df['invoice_date'])
-    df['payment_date'] = pd.to_datetime(df['payment_date'])
+    df['invoice_date'] = pd.to_datetime(df['invoice_date'], errors='coerce')
+    df['payment_date'] = pd.to_datetime(df['payment_date'], errors='coerce')
     return df
 
 @task()

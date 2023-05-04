@@ -64,8 +64,6 @@ resource "google_bigquery_table" "table_FMT1_2008" {
     }
   }
 
-# Only defining the necessary schema for range_partitioning
-# The rest of the schema will be created when data is uploaded
   schema = <<EOF
 [
     {
@@ -124,7 +122,7 @@ resource "google_bigquery_table" "table_FMT1_2008" {
     },
     {
         "name": "Stimulus_Type",
-        "type": "FLOAT64",
+        "type": "STRING",
         "mode": "NULLABLE",
         "description": "Stimulus_Type"
     },
@@ -206,8 +204,6 @@ resource "google_bigquery_table" "table_FMT2_2018" {
     }
   }
 
-# Only defining the necessary schema for range_partitioning
-# The rest of the schema will be created when data is uploaded
   schema = <<EOF
 [
     {
@@ -320,7 +316,7 @@ resource "google_bigquery_table" "table_FMT2_2018" {
     },
     {
         "name": "region",
-        "type": "FLOAT64",
+        "type": "STRING",
         "mode": "NULLABLE",
         "description": "region"
     },

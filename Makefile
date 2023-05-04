@@ -10,12 +10,11 @@ init:
 
 start:
 	@echo "-- STARTING PREFECT CONTAINERS AND CREATING BLOCKS --"
-	docker compose up --detach --no-attach lou-dbt
+	docker compose up --detach --scale lou-dbt=0
 
 	@echo "-- RUNNING FLOWS --"
-	# TODO: Using default years currently as a quicker test
-	docker compose run --rm --entrypoint='python -m flows.web_to_gcs_etl' --name=prefect-etl prefect-scripts
-	docker compose run --rm --entrypoint='python -m flows.gcs_to_bq_etl' --name=prefect-etl prefect-scripts
+	docker compose run --rm --entrypoint='python -m flows.web_to_gcs_etl --start_year=2008 --end_year=2022' --name=prefect-etl prefect-scripts
+	docker compose run --rm --entrypoint='python -m flows.gcs_to_bq_etl --start_year=2008 --end_year=2022' --name=prefect-etl prefect-scripts
 	@echo "-- START COMPLETE. RUN 'make transform' NEXT--"
 
 transform:

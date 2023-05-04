@@ -16,5 +16,5 @@ select
     Funding_Source as funding_source,
     CheckID as payment_id,
     CheckDt as payment_date,
-    CheckAmt as payment_amount,
+    DistributionAmt as payment_amount,
 from {{ source('staging', 'FMT1_2008_expenditure_data') }}
