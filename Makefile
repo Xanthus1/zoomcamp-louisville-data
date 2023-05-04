@@ -9,20 +9,19 @@ init:
 	@echo "-- INIT COMPLETE --"
 
 start:
-	@echo "-- STARTING CONTAINERS AND CREATING BLOCKS --"
-	docker compose up --detach
+	@echo "-- STARTING PREFECT CONTAINERS AND CREATING BLOCKS --"
+	docker compose up --detach --no-attach lou-dbt
 
 	@echo "-- RUNNING FLOWS --"
 	# TODO: Using default years currently as a quicker test
 	docker compose run --rm --entrypoint='python -m flows.web_to_gcs_etl' --name=prefect-etl prefect-scripts
 	docker compose run --rm --entrypoint='python -m flows.gcs_to_bq_etl' --name=prefect-etl prefect-scripts
-	@echo "-- START COMPLETE --"
+	@echo "-- START COMPLETE. RUN 'make transform' NEXT--"
 
-test:
-	@echo "-- TEST START --"
-	# TODO: Using default years currently as a quicker test
-	docker compose run --rm --entrypoint='python -m flows.gcs_to_bq_etl' --name=prefect-etl prefect-scripts
-	@echo "-- TEST COMPLETE --"
+transform:
+	@echo "-- STARTING DBT CONTAINER FOR TRANSFORMATION --"
+	docker compose run --rm --workdir='//usr/app/dbt/bq_louisville_data' lou-dbt run
+	@echo "-- TRANSFORMATION COMPLETE. --"
 
 stop:
 	@echo "-- STOPPING DOCKER CONTAINERS / NETWORKS --"

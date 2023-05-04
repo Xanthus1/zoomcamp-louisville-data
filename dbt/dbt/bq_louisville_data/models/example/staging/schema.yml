@@ -1,0 +1,13 @@
+
+version: 2
+
+sources:
+    - name: staging
+      #For bigquery:
+      database: "{{ env_var('GCP_PROJECT_ID') }}"
+
+      schema: louisville_data_all
+
+      tables:
+        - name: FMT1_2008_expenditure_data 
+        - name: FMT2_2018_expenditure_data 

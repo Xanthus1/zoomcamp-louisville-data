@@ -1,0 +1,8 @@
+
+version: 2
+
+sources:
+    - name: fact_expenditures
+      description: >
+        Aggregate table data from all yearly expenditure reports of different formats,
+        with related columns from different formats consolidated.

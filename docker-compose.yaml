@@ -31,6 +31,17 @@ services:
       - PREFECT_API_URL=http://prefect-server:4200/api
     networks:
       - default
-
+  lou-dbt:
+    build:
+      context: dbt
+      target: dbt-bigquery
+    image: dbt/bigquery
+    volumes:
+      - ./dbt:/usr/app
+      - ./dbt/profiles.yml:/root/.dbt/profiles.yml
+      - ./credentials/gcp_service_account_key.json:/root/.google/credentials/google_credentials.json
+    environment:
+      - GCP_PROJECT_ID
+    network_mode: host
 volumes:
   prefect-server-db:
