@@ -18,28 +18,22 @@ The next stage will extract data from the GCS bucket, perform cleanup and transf
 * Google Cloud account
     * New project created
     * Google Cloud service account for this project with Storage and BigQuery roles. JSON Access key downloaded.
-* Linux or WSL
+* Linux or WSL and ability to run `make`.
 
-### Setup
+### Setup / Commands
 1. Setup: Cloud Credentials / env variables / Docker install / WSL
     1.a Export environment variable for GCP_PROJECT_ID
     ```
     > export GCP_PROJECT_ID=<Project ID>
     ```
     1.b Download a service account JSON key for a service account with Storage and BigQuery roles. Place JSON file into the `credentials` directory with the name `gcp_service_account_key.json`
-2. Terraform initialization
-    ```
-    # In the '/terraform' directory
-    > terraform init
-    > terraform plan -var project=${GCP_PROJECT_ID}
-    > terraform apply -var project=${GCP_PROJECT_ID}
-    ```
-3. Docker containers / Prefect services (Start Orion/ and agents?). Metabase?
-4. DBT transformation into fact tables (cloud or local instance?)
-5. Dashboard?
-6. Running flow / scheduling?
+2. `make init` in the project directory. This will use terraform to create the necessary infrastructure, and build the docker containers
+3. `make start`. This will start prefect containers to run the ETL task flows.
+4. `make transform`. This will start the dbt container and run transformations.
+5. `make stop` to stop containers
+6. `make clean` to stop containers, remove volumes, and use terraform to take down resources created by this project.
 
-## Improvmements
+## Future Improvmements
 
 Include a script or optional parameter to download directly from the original data source instead of my repo with a snapshot. It should download their latest previously generated CSV, rather than requesting new report, to avoid excessive report generation on their end.
 

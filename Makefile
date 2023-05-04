@@ -27,10 +27,10 @@ stop:
 	docker compose down
 	@echo "-- STOP COMPLETE --"
 
-destroy:
-	@echo "-- TERRFORM REMOVING GOOGLE CLOUD PROJECT INFRASTRUCTURE --"
+clean:
+	@echo "-- REMOVING LOCAL DOCKER INFRASTRUCTURE (INCL. VOLUMES) --"
+	docker compose down --volumes
+	@echo "-- TERRAFORM REMOVING GOOGLE CLOUD PROJECT INFRASTRUCTURE --"
 	cd terraform && \
-		terraform destroy -var project=${GCP_PROJECT_ID}
-	@echo "-- REMOVING LOCAL DOCKER INFRASTRUCTURE (INCL. IMAGES, VOLUMES) --"
-	docker compose down --rmi --volumes
-	@echo "-- DESTROY COMPLETE --"
+		terraform destroy -var project=${GCP_PROJECT_ID}	
+	@echo "-- CLEAN COMPLETE --"
